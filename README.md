@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Learning Go
 This is the repository for the LinkedIn Learning course Learning Go. The full course is available from [LinkedIn Learning][lil-course-url].
 
@@ -49,3 +50,6 @@ Check out my other courses on [LinkedIn Learning](https://www.linkedin.com/learn
 
 [lil-course-url]: https://www.linkedin.com/learning/learning-go-8399317
 [lil-thumbnail-url]: https://cdn.lynda.com/course/2875237/2875237-1616177158000-16x9.jpg
+=======
+# learning-go
+>>>>>>> db0ca7442c56c60555163cf458d032f99028535d
