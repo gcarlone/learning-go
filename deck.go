@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// deck behaves as a slice of string with additional behaviours
 type deck []string
 
 func newDeck() deck {
