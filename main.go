@@ -18,7 +18,15 @@ func main() {
 	anotherCard := newCard() // interred from function return type
 
 	fmt.Println(anotherCard)
-	fmt.Println(createAnotherCard())
+
+	// every eleement in a slice or in an array have to be of the same type
+	//cards := []string{card, anotherCard, createAnotherCard()}
+	cards := desk{card, anotherCard, createAnotherCard()}
+
+	// append do not modify existent slice, return a new slice
+	cards = append(cards, "Six of Spades", "Four of Spades")
+
+	cards.print()
 }
 
 func newCard() string {
