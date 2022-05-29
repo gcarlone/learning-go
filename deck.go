@@ -10,20 +10,28 @@ import (
 )
 
 // deck behaves as a slice of string with additional behaviours
-type deck []string
+type deck []card
 
 func newDeck() deck {
 	cardSuits := []string{"Spades", "Diamonds", "Hearts", "Clubs"}
 	cardValues := []string{"Ace", "Two", "Three", "Four"}
 
 	cards := deck{}
-	for _, suit := range cardSuits {
-		for _, value := range cardValues {
-			cards = append(cards, value+" of "+suit)
+	for _, s := range cardSuits {
+		for _, v := range cardValues {
+			cards = append(cards, card{value: v, suit: s})
 		}
 	}
 
 	return cards
+}
+
+func newDeckFromStringSlice(s []string) deck {
+	d := make(deck, len(s))
+	for i, c := range s {
+		d[i] = newCard(c)
+	}
+	return d
 }
 
 // Receiver function is like a method in OOP
@@ -47,12 +55,20 @@ func (d deck) shuffle() {
 	}
 }
 
+func (d deck) toStringSlice() []string {
+	cards := make([]string, len(d))
+	for i, c := range d {
+		cards[i] = c.toString()
+	}
+	return cards
+}
+
 func (d deck) toString() string {
-	return strings.Join([]string(d), ",")
+	return strings.Join(d.toStringSlice(), ",")
 }
 
 func parseString(s string) deck {
-	return deck(strings.Split(s, ","))
+	return newDeckFromStringSlice(strings.Split(s, ","))
 }
 
 func (d deck) saveToFile(filename string) error {

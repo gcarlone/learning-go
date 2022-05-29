@@ -8,17 +8,20 @@ func main() {
 	// var card string = "Ace of Spades" // long form
 	// var card = "Ace of Spades"
 	// var card string
-	card := "Ace of Spades" // := to infer
-	card = "Five of Diamond"
+	c := card{"Spades", "Ace"} // := is used to infer type
 
-	anotherCard := newCard() // interred from function return type
+	// better approach is to specify which property you are referring to
+	// that approach is more secure on refactoring
+	c = card{suit: "Diamond", value: "Five"}
+
+	anotherCard := newCard("Three of Clubs") // inferred from function return type
 
 	// every eleement in a slice or in an array have to be of the same type
 	// cards := []string{card, anotherCard, createAnotherCard()}
-	cards := deck{card, anotherCard, createAnotherCard()}
+	cards := deck{c, anotherCard, createAnotherCard()}
 
 	// append do not modify existent slice, return a new slice
-	cards = append(cards, "Six of Spades", "Four of Spades")
+	cards = append(cards, newCard("Six of Spades"), card{value: "Four", suit: "Spades"})
 	cards.print()
 
 	cards = newDeck()
@@ -33,8 +36,4 @@ func main() {
 
 	cards.shuffle()
 	cards.print()
-}
-
-func newCard() string {
-	return "Three of Diamond"
 }
