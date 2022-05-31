@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 func main() {
 	/* GO is a statically typed language
 	string keyword può essere omessa perché c'è
@@ -43,4 +45,32 @@ func main() {
 	//pointerToCard.changeCardValue()
 	cards[0].changeCardValue() // go SHORTCUT to automatically handle pointer
 	cards[0].printCard()
+
+	printPlayers(createPlayersMap())
+}
+
+// MAP is a REFERENCE TYPE
+func createPlayersMap() map[string]string {
+	// ZERO VALUE of a map is an empty map
+	// var players map[string]string
+
+	// players := make(map[string]string)
+	// players["player1"] = "Giuseppe"
+
+	players := map[string]string{
+		"player1": "Giuseppe",
+		"player2": "Giovanni", // nota la virgola anche sull'ultimo elemento
+	}
+
+	players["player3"] = "Unknown Player"
+	delete(players, "player3")
+
+	return players
+}
+
+func printPlayers(players map[string]string) {
+	// in a map KEYS are INDEXED
+	for k, v := range players {
+		fmt.Println(k, "is", v)
+	}
 }
