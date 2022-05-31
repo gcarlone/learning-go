@@ -36,4 +36,11 @@ func main() {
 
 	cards.shuffle()
 	cards.print()
+
+	cards[0].printCard()
+
+	//pointerToCard := &cards[0]
+	//pointerToCard.changeCardValue()
+	cards[0].changeCardValue() // go SHORTCUT to automatically handle pointer
+	cards[0].printCard()
 }
