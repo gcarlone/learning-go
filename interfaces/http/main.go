@@ -2,9 +2,19 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 )
+
+type logWriter struct {
+}
+
+func (logWriter) Write(p []byte) (int, error) {
+	fmt.Println(string(p))
+	fmt.Println(len(p), "bytes written.")
+	return len(p), nil
+}
 
 func main() {
 	resp, err := http.Get("http://www.google.it")
@@ -13,13 +23,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	printResponseBody(resp)
+	//PrintResponseBody(resp)
+
+	io.Copy(logWriter{}, resp.Body)
 }
 
 // nella realtà viene fatto in modo più conciso
 // ed elegante con la helper function
 // io.Copy(os.Stdout, resp.Body)
-func printResponseBody(resp *http.Response) {
+func PrintResponseBody(resp *http.Response) {
 	content := make([]byte, 99999)
 	size, err := resp.Body.Read(content)
 	if err != nil {
