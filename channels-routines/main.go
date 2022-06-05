@@ -49,6 +49,19 @@ func main() {
 	for i := 0; i < len(links); i++ {
 		fmt.Println(<-c) // blocking code: finché non arriva un messaggio sul canale
 	}
+
+	// Repeating Routines
+	for _, link := range links {
+		go printCheckLink(link, c)
+	}
+
+	// ciclo infinito (le due seguenti forme sono equivalenti)
+	// for {
+	//  	go printCheckLink(<-c, c)
+	// }
+	for l := range c {
+		go printCheckLink(l, c)
+	}
 }
 
 func checkLink(link string, c chan string) {
@@ -60,4 +73,17 @@ func checkLink(link string, c chan string) {
 	} else {
 		c <- fmt.Sprintln(link, "is up!")
 	}
+}
+
+func printCheckLink(link string, c chan string) {
+	// la go routine rimane in attesa della risposta del GET
+	// bloccando l'esecuzione del programma
+	_, err := http.Get(link)
+	if err != nil {
+		fmt.Println(link, "might be down!")
+		c <- link
+		return
+	}
+	fmt.Println(link, "is up!")
+	c <- link
 }
