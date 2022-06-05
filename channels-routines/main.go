@@ -28,6 +28,10 @@ func main() {
 		"http://amazon.com",
 	}
 
+	// CHANNELS are the olny way to communicate between go routines
+	// a CHANNEL has a typed content
+	c := make(chan string)
+
 	// questo è un approccio seriale, nel quale ogni nuovo check
 	// inizia solo dopo che il precedente è terminato
 	for _, link := range links {
@@ -36,17 +40,24 @@ func main() {
 
 		// aggiungengo la keyword go, chiediamo che la funzione venga
 		// eseguita in un nuovo thread (CHILD ROUTINE)
-		go checkLink(link)
+		go checkLink(link, c)
+	}
+
+	// in such a case we need a channel to make the main routine
+	// aware of the execution status of the child routines elsewhere
+	// the program exit without wait for child termination
+	for i := 0; i < len(links); i++ {
+		fmt.Println(<-c) // blocking code: finché non arriva un messaggio sul canale
 	}
 }
 
-func checkLink(link string) {
+func checkLink(link string, c chan string) {
 	// la go routine rimane in attesa della risposta del GET
 	// bloccando l'esecuzione del programma
 	_, err := http.Get(link)
 	if err != nil {
-		fmt.Println(link, "might be down!")
-		return
+		c <- fmt.Sprintln(link, "might be down!")
+	} else {
+		c <- fmt.Sprintln(link, "is up!")
 	}
-	fmt.Println(link, "is up!")
 }
